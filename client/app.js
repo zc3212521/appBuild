@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import "babel-polyfill"
 import {AppContainer} from 'react-hot-loader' //热更替相关
 import {BrowserRouter} from 'react-router-dom'
 import {Provider} from 'mobx-react'
