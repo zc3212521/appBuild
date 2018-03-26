@@ -18,7 +18,7 @@ class AppState {
 
 const appState = new AppState()
 autorun(() =>{
-    console.log(111, appState.msg)
+    // console.log(111, appState.msg)
 })
 
 setInterval(() =>{
