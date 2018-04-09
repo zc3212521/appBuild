@@ -1,92 +1,88 @@
-import React  from 'react'
-import PropTypes from 'prop-types'
-import { Button } from 'antd'
-import { DefaultDraftBlockRenderMap, Editor, EditorState, convertFromHTML, ContentState, ContentBlock } from 'draft-js'
-import Immutable from 'immutable'
-
+import React, { Component } from 'react';
 import {
-    observer,
-    inject
-} from 'mobx-react'
-// @inject('appState') @observer
+    convertFromRaw,
+    EditorState,
+} from 'draft-js';
 
+import Editor from 'draft-js-plugins-editor';
 
-class MyCustomBlock extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+import createImagePlugin from 'draft-js-image-plugin';
+import editorStyles from './editorStyles.css';
 
-    render() {
-        console.log(222, this.props.children)
-        return (
-            <div className='MyCustomBlock' style={{color: 'red'}}>
-                {/* here, this.props.children contains a <section> container, as that was the matching element */}
-                {this.props.children}
-            </div>
-        );
-    }
-}
+const imagePlugin = createImagePlugin();
+const plugins = [imagePlugin];
 
+/* eslint-disable */
+const initialState = {
+    "entityMap": {
+        "0": {
+            "type": "image",
+            "mutability": "IMMUTABLE",
+            "data": {
+                "src": "https://wscdn.ql1d.com/12984709554249626359QN1D747MTIxNw==.jpg"
+            }
+        }
+    },
+    "blocks": [{
+        "key": "9gm3s",
+        "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }, {
+        "key": "ov7r",
+        "text": " ",
+        "type": "atomic",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [{
+            "offset": 0,
+            "length": 1,
+            "key": 0
+        }],
+        "data": {}
+    }, {
+        "key": "e23a8",
+        "text": "See advanced examples further down …",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }]
+};
+/* eslint-enable */
 
-// const blockRenderMap = Immutable.Map({
-//     'MyCustomBlock': {
-//         // element is used during paste or html conversion to auto match your component;
-//         // it is also retained as part of this.props.children and not stripped out
-//         element: 'section',
-//         wrapper: MyCustomBlock,
-//     }
-// });
-// console.log(111, DefaultDraftBlockRenderMap)
-//
-// const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
-//
-// console.log(222, extendedBlockRenderMap)
+export default class SimpleImageEditor extends Component {
 
-const blockRenderMap = Immutable.Map({
-    'section': {
-        element: 'section'
-    }
-});
-const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
-console.log(333, extendedBlockRenderMap)
+    state = {
+        editorState: EditorState.createWithContent(convertFromRaw(initialState)),
+    };
 
-export default class TopicList extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {editorState: EditorState.createEmpty()};
-        this.onChange = (editorState) => this.setState({editorState});
-        this.log = this.log.bind(this)
-    }
-
-    log() {
-
-        const sampleMarkup = '<section>link</section>';
-
-        console.log(5, convertFromHTML)
-        const blocksFromHTML = convertFromHTML(sampleMarkup);
-        const state = ContentState.createFromBlockArray(
-            blocksFromHTML.contentBlocks,
-            blocksFromHTML.entityMap
-        );
+    onChange = (editorState) => {
         this.setState({
-            editorState: EditorState.createWithContent(state)
-        })
-        console.log(666,this.state.editorState.toJS(),this.state.editorState.getCurrentContent().getBlockMap())
-    }
+            editorState,
+        });
+    };
+
+    focus = () => {
+        this.editor.focus();
+    };
+
     render() {
         return (
             <div>
-                <Editor
-                    editorState={this.state.editorState}
-                    onChange={this.onChange}
-                    blockRenderMap={extendedBlockRenderMap}
-                />
-                <br/>
-                <Button onClick={this.log}>log</Button>
+                <div className={editorStyles.editor} onClick={this.focus}>
+                    <Editor
+                        editorState={this.state.editorState}
+                        onChange={this.onChange}
+                        plugins={plugins}
+                        ref={(element) => { this.editor = element; }}
+                    />
+                </div>
             </div>
-        )
+        );
     }
 }
-
-
