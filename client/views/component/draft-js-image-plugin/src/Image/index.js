@@ -31,7 +31,6 @@ export default class Image extends Component {
         src={src}
         role="presentation"
         className={combinedClassName}
-        style={{margin: '0 auto', display:'block'}}
       />
     );
   }
