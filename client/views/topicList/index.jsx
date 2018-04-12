@@ -1,91 +1,66 @@
-/* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
 
-import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
-
-import createInlineToolbarPlugin, { Separator } from 'draft-js-inline-toolbar-plugin';
 import {
-    ItalicButton,
-    BoldButton,
-    UnderlineButton,
-    CodeButton,
-    HeadlineOneButton,
-    HeadlineTwoButton,
-    HeadlineThreeButton,
-    UnorderedListButton,
-    OrderedListButton,
-    BlockquoteButton,
-    CodeBlockButton,
-} from 'draft-js-buttons';
+    convertFromRaw,
+    EditorState,
+} from 'draft-js';
+
+import Editor from "../component/draft-js-plugins-editor/src"
+import createImagePlugin from '../component/draft-js-image-plugin/src'
+
 import editorStyles from './editorStyles.css';
 
+const imagePlugin = createImagePlugin();
+const plugins = [imagePlugin];
+console.log(666, plugins)
 
-class HeadlinesPicker extends Component {
-    componentDidMount() {
-        setTimeout(() => { window.addEventListener('click', this.onWindowClick); });
-    }
+/* eslint-disable */
+const initialState = {
+    "entityMap": {
+        "0": {
+            "type": "image",
+            "mutability": "IMMUTABLE",
+            "data": {
+                "src": "http://7xjl1j.com1.z0.glb.clouddn.com/256Icon.png"
+            }
+        }
+    },
+    "blocks": [{
+        "key": "9gm3s",
+        "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }, {
+        "key": "ov7r",
+        "text": " ",
+        "type": "atomic",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [{
+            "offset": 0,
+            "length": 1,
+            "key": 0
+        }],
+        "data": {}
+    }, {
+        "key": "e23a8",
+        "text": "See advanced examples further down …",
+        "type": "unstyled",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [],
+        "data": {}
+    }]
+};
+/* eslint-enable */
 
-    componentWillUnmount() {
-        window.removeEventListener('click', this.onWindowClick);
-    }
-
-    onWindowClick = () =>
-        // Call `onOverrideContent` again with `undefined`
-        // so the toolbar can show its regular content again.
-        this.props.onOverrideContent(undefined);
-
-    render() {
-        const buttons = [HeadlineOneButton, HeadlineTwoButton, HeadlineThreeButton];
-        return (
-            <div>
-                {buttons.map((Button, i) => // eslint-disable-next-line
-                    <Button key={i} {...this.props} />
-                )}
-            </div>
-        );
-    }
-}
-
-class HeadlinesButton extends Component {
-    onClick = () =>
-        // A button can call `onOverrideContent` to replace the content
-        // of the toolbar. This can be useful for displaying sub
-        // menus or requesting additional information from the user.
-        this.props.onOverrideContent(HeadlinesPicker);
-
-    render() {
-        return (
-            <div className={editorStyles.headlineButtonWrapper}>
-                <button onClick={this.onClick} className={editorStyles.headlineButton}>
-                    H
-                </button>
-            </div>
-        );
-    }
-}
-
-const inlineToolbarPlugin = createInlineToolbarPlugin({
-    structure: [
-        BoldButton,
-        ItalicButton,
-        UnderlineButton,
-        CodeButton,
-        Separator,
-        HeadlinesButton,
-        UnorderedListButton,
-        OrderedListButton,
-        BlockquoteButton,
-        CodeBlockButton
-    ]
-});
-const { InlineToolbar } = inlineToolbarPlugin;
-const plugins = [inlineToolbarPlugin];
-const text = 'In this editor a toolbar shows up once you select part of the text …';
-
-export default class CustomInlineToolbarEditor extends Component {
+export default class SimpleImageEditor extends Component {
 
     state = {
-        editorState: createEditorStateWithText(text),
+        editorState: EditorState.createWithContent(convertFromRaw(initialState)),
     };
 
     onChange = (editorState) => {
@@ -100,14 +75,15 @@ export default class CustomInlineToolbarEditor extends Component {
 
     render() {
         return (
-            <div className="editor" onClick={this.focus}>
-                <Editor
-                    editorState={this.state.editorState}
-                    onChange={this.onChange}
-                    plugins={plugins}
-                    ref={(element) => { this.editor = element; }}
-                />
-                <InlineToolbar />
+            <div>
+                <div className={editorStyles.editor} onClick={this.focus}>
+                    <Editor
+                        editorState={this.state.editorState}
+                        onChange={this.onChange}
+                        plugins={plugins}
+                        ref={(element) => { this.editor = element; }}
+                    />
+                </div>
             </div>
         );
     }
