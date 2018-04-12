@@ -1,66 +1,21 @@
 import React, { Component } from 'react';
 
-import {
-    convertFromRaw,
-    EditorState,
-} from 'draft-js';
+import Editor, { createEditorStateWithText } from '../component/draft-js-plugins-editor/src';
 
-import Editor from "../component/draft-js-plugins-editor/src"
-import createImagePlugin from '../component/draft-js-image-plugin/src'
+import createImagePlugin from '../component/draft-js-image-plugin/src';
+import ImageAdd from './ImageAdd';
 
 import editorStyles from './editorStyles.css';
 
 const imagePlugin = createImagePlugin();
 const plugins = [imagePlugin];
-console.log(666, plugins)
 
-/* eslint-disable */
-const initialState = {
-    "entityMap": {
-        "0": {
-            "type": "image",
-            "mutability": "IMMUTABLE",
-            "data": {
-                "src": "http://7xjl1j.com1.z0.glb.clouddn.com/256Icon.png"
-            }
-        }
-    },
-    "blocks": [{
-        "key": "9gm3s",
-        "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }, {
-        "key": "ov7r",
-        "text": " ",
-        "type": "atomic",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [{
-            "offset": 0,
-            "length": 1,
-            "key": 0
-        }],
-        "data": {}
-    }, {
-        "key": "e23a8",
-        "text": "See advanced examples further down …",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }]
-};
-/* eslint-enable */
+const text = 'Click on the + button below and insert "/images/canada-landscape-small.jpg" to add the landscape image. Alternativly you can use any image url on the web.';
 
-export default class SimpleImageEditor extends Component {
+export default class CustomImageEditor extends Component {
 
     state = {
-        editorState: EditorState.createWithContent(convertFromRaw(initialState)),
+        editorState: createEditorStateWithText(text),
     };
 
     onChange = (editorState) => {
@@ -84,6 +39,11 @@ export default class SimpleImageEditor extends Component {
                         ref={(element) => { this.editor = element; }}
                     />
                 </div>
+                <ImageAdd
+                    editorState={this.state.editorState}
+                    onChange={this.onChange}
+                    modifier={imagePlugin.addImage}
+                />
             </div>
         );
     }
