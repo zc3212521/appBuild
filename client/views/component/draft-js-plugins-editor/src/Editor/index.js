@@ -92,7 +92,7 @@ class PluginEditor extends Component {
     let newEditorState = editorState;
     this.resolvePlugins().forEach((plugin) => {
       if (plugin.onChange) {
-        newEditorState = plugin.onChange(newEditorState, this.getPluginMethods());
+        newEditorState = plugin.onChange(newEditorState, this.getPluginMethods()); // 插件中的onchange接受一个新的editorstate, 和一个get对象
       }
     });
 
@@ -190,7 +190,6 @@ class PluginEditor extends Component {
     const handleHookKeys = [];
     const fnHookKeys = [];
     const plugins = [this.props, ...this.resolvePlugins()];
-    console.log(222, this.props)
 
     plugins.forEach((plugin) => {
       Object.keys(plugin).forEach((attrName) => {
@@ -304,7 +303,8 @@ class PluginEditor extends Component {
     const customStyleMap = this.resolveCustomStyleMap();
     const accessibilityProps = this.resolveAccessibilityProps();
     const blockRenderMap = this.resolveblockRenderMap();
-    console.log(111, this.props, pluginHooks, customStyleMap, blockRenderMap)
+    console.log(555, this.props)
+
     return (
       <Editor
         {...this.props}

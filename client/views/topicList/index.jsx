@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Card } from "antd"
 
 import {
     convertFromRaw,
@@ -15,86 +16,31 @@ import createFocusPlugin from '../component/draft-js-focus-plugin/src';
 import createBlockDndPlugin from '../component/draft-js-drag-n-drop-plugin/src';
 
 // import createDragNDropUploadPlugin from '../component/draft-js-drag-n-drop-upload-plugin/src';
-
+import './editorStyles.css'
 // import mockUpload from './mockUpload';
 import ImageAdd from './ImageAdd';
 
 const focusPlugin = createFocusPlugin();
-// const resizeablePlugin = createResizeablePlugin();
 const blockDndPlugin = createBlockDndPlugin();
-// const alignmentPlugin = createAlignmentPlugin();
-// const { AlignmentTool } = alignmentPlugin;
 
 const decorator = composeDecorators(
-    // resizeablePlugin.decorator,
-    // alignmentPlugin.decorator,
     focusPlugin.decorator,
     blockDndPlugin.decorator
 );
+console.log(555, decorator)
 
-import editorStyles from './editorStyles.css';
-
-const imagePlugin = createImagePlugin(decorator);
-
-// const dragNDropFileUploadPlugin = createDragNDropUploadPlugin({
-//     handleUpload: mockUpload,
-//     addImage: imagePlugin.addImage,
-// });
+const imagePlugin = createImagePlugin({ decorator });
 
 const plugins = [
-    // dragNDropFileUploadPlugin,
     blockDndPlugin,
     focusPlugin,
-    // alignmentPlugin,
-    // resizeablePlugin,
     imagePlugin
 ];
-
-const initialState = {
-    "entityMap": {
-        "0": {
-            "type": "image",
-            "mutability": "IMMUTABLE",
-            "data": {
-                "src": "https://wscdn.ql1d.com/97275479939049584547QN1D204MTM0MA==.jpg"
-            }
-        }
-    },
-    "blocks": [{
-        "key": "9gm3s",
-        "text": "You can have images in your text field which are draggable. Hover over the image press down your mouse button and drag it to another position inside the editor.",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }, {
-        "key": "ov7r",
-        "text": " ",
-        "type": "atomic",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [{
-            "offset": 0,
-            "length": 1,
-            "key": 0
-        }],
-        "data": {}
-    }, {
-        "key": "e23a8",
-        "text": "You can checkout the alignment tool plugin documentation to see how to build a compatible block plugin …",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }]
-};
 
 export default class CustomImageEditor extends Component {
 
     state = {
-        editorState: EditorState.createWithContent(convertFromRaw(initialState)),
+        editorState: EditorState.createEmpty()
     };
 
     onChange = (editorState) => {
@@ -110,20 +56,22 @@ export default class CustomImageEditor extends Component {
     render() {
         return (
             <div>
-                <div className={editorStyles.editor} onClick={this.focus}>
-                    <Editor
+                <Card>
+                    <div onClick={this.focus} className='editor'>
+                        <Editor
+                            editorState={this.state.editorState}
+                            onChange={this.onChange}
+                            plugins={plugins}
+                            ref={(element) => { this.editor = element; }}
+                        />
+
+                    </div>
+                    <ImageAdd
                         editorState={this.state.editorState}
                         onChange={this.onChange}
-                        plugins={plugins}
-                        ref={(element) => { this.editor = element; }}
+                        modifier={imagePlugin.addImage}
                     />
-                    {/*<AlignmentTool />*/}
-                </div>
-                <ImageAdd
-                    editorState={this.state.editorState}
-                    onChange={this.onChange}
-                    modifier={imagePlugin.addImage}
-                />
+                </Card>
             </div>
         );
     }

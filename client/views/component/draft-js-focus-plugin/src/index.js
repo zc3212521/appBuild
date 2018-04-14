@@ -6,8 +6,9 @@ import createDecorator from './createDecorator';
 import createBlockKeyStore from './utils/createBlockKeyStore';
 import blockInSelection from './utils/blockInSelection';
 import getBlockMapKeys from './utils/getBlockMapKeys';
-import defaultTheme from './style.css';
+import './style.css';
 
+const defaultTheme = {focused: 'focused', unfocused:"unfocused"}  // 源代码bug修正
 const focusableBlockIsSelected = (editorState, blockKeyStore) => {
   const selection = editorState.getSelection();
   if (selection.getAnchorKey() !== selection.getFocusKey()) {
@@ -23,6 +24,7 @@ export default (config = {}) => {
   const theme = config.theme ? config.theme : defaultTheme;
   let lastSelection;
   let lastContentState;
+
 
   return {
     handleReturn: (event, editorState, { setEditorState }) => {
@@ -125,6 +127,7 @@ export default (config = {}) => {
       // since all the selection checks are not necessary.
       // In case there is a use-case where focus makes sense for none atomic blocks we can add it
       // in the future.
+
       if (contentBlock.getType() !== 'atomic') {
         return undefined;
       }

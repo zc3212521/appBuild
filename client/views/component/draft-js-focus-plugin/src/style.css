@@ -4,7 +4,7 @@
   box-shadow: 0 0 0 3px #D2E3F7;
 }
 
-.focused {
+  .focused {
   cursor: default;
   border-radius: 2px;
   box-shadow: 0 0 0 3px #ACCEF7;

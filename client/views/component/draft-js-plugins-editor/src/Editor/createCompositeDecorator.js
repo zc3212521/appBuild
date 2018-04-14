@@ -10,7 +10,7 @@ export default (decorators, getEditorState, setEditorState) => {
   const convertedDecorators = List(decorators)
     .map((decorator) => ({
       ...decorator,
-      component: decorateComponentWithProps(decorator.component, { getEditorState, setEditorState }),
+      component: decorateComponentWithProps(decorator.component, { getEditorState, setEditorState }), // 将第二个参数作为props转入第一个参数表示的组件中
     }))
     .toJS();
 
