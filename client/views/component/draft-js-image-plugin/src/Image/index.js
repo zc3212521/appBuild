@@ -6,9 +6,10 @@ export default class Image extends Component {
     const {
       block,
       className,
-      theme = {},
+      theme,
       ...otherProps
     } = this.props;
+    console.log(1414, this.props)
     // leveraging destructuring to omit certain properties from props
     const {
       blockProps, // eslint-disable-line no-unused-vars
@@ -24,14 +25,19 @@ export default class Image extends Component {
       ...elementProps
     } = otherProps;
     const combinedClassName = unionClassNames(theme.image, className);
+
     const { src } = contentState.getEntity(block.getEntityAt(0)).getData();
     return (
-      <img
-        {...elementProps}
-        src={src}
-        role="presentation"
-        className={combinedClassName}
-      />
+        <div style={{textAlign:"center"}}>
+            <img
+                {...elementProps}
+                src={src}
+                role="presentation"
+                style={{maxWidth:"100%"}}
+                className={combinedClassName}
+            />
+        </div>
+
     );
   }
 }

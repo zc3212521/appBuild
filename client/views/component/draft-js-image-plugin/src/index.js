@@ -3,14 +3,13 @@ import addImage from './modifiers/addImage';
 import ImageComponent from './Image';
 import imageStyles from './imageStyles.css';
 
+console.log("imagestyule", imageStyles)
 const defaultTheme = {
   image: imageStyles.image,
 };
 
 export default (config = {}) => {
-
-
-  const theme = config.theme ? config.theme : defaultTheme;
+  const theme = config.theme ? config.theme : defaultTheme; // 这里的theme指要给img添加的类名,添加报错
   let Image = config.imageComponent || ImageComponent;
   if (config.decorator) {
     Image = config.decorator(Image);
