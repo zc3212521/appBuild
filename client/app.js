@@ -6,7 +6,7 @@ import {BrowserRouter} from 'react-router-dom'
 import {Provider} from 'mobx-react'
 import App from './views/App.jsx'
 
-import appState from './store/app.state'
+// import appState from './store/app.state'
 
 console.log("process.env.NODE_ENV = ", process.env.NODE_ENV)
 
@@ -14,7 +14,7 @@ const root = document.getElementById('root')
 const render = (Component, renderMethod = "render") => {
     ReactDOM[renderMethod](
         <AppContainer>
-            <Provider appState={appState}>
+            <Provider>
                 <BrowserRouter>
                     <Component/>
                 </BrowserRouter>

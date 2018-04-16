@@ -4,7 +4,7 @@ import {
     EditorState,
 } from 'draft-js';
 
-import Editor, { composeDecorators } from 'draft-js-plugins-editor';
+import Editor, { composeDecorators } from '../component/draft-js-plugins-editor/src';
 
 import createImagePlugin from '../component/draft-js-image-plugin/src';
 

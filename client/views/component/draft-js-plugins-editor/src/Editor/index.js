@@ -303,7 +303,7 @@ class PluginEditor extends Component {
     const customStyleMap = this.resolveCustomStyleMap();
     const accessibilityProps = this.resolveAccessibilityProps();
     const blockRenderMap = this.resolveblockRenderMap();
-    console.log(555, this.props)
+    console.log('this.props', this.props)
 
     return (
       <Editor
