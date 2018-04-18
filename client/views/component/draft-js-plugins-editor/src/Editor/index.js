@@ -51,7 +51,10 @@ class PluginEditor extends Component {
       );
     });
 
-    this.state = {}; // TODO for Nik: ask ben why this is relevent
+    this.state = {}
+
+
+    ; // TODO for Nik: ask ben why this is relevent
   }
 
   componentWillMount() {
@@ -303,7 +306,6 @@ class PluginEditor extends Component {
     const customStyleMap = this.resolveCustomStyleMap();
     const accessibilityProps = this.resolveAccessibilityProps();
     const blockRenderMap = this.resolveblockRenderMap();
-    console.log('this.props', this.props)
 
     return (
       <Editor

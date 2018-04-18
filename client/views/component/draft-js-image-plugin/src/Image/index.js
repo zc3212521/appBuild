@@ -9,7 +9,6 @@ export default class Image extends Component {
       theme,
       ...otherProps
     } = this.props;
-    console.log(1414, this.props)
     // leveraging destructuring to omit certain properties from props
     const {
       blockProps, // eslint-disable-line no-unused-vars

@@ -18,7 +18,6 @@ const ColorBlock = ({
                         style,
                         ...elementProps
                     }) => {
-    console.log(454545, {...elementProps})
     return (
         <div
             {...elementProps}

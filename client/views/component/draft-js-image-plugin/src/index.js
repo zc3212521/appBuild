@@ -3,7 +3,6 @@ import addImage from './modifiers/addImage';
 import ImageComponent from './Image';
 import imageStyles from './imageStyles.css';
 
-console.log("imagestyule", imageStyles)
 const defaultTheme = {
   image: imageStyles.image,
 };

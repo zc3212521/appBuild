@@ -27,7 +27,6 @@ const decorator = composeDecorators(
     focusPlugin.decorator,
     blockDndPlugin.decorator
 );
-console.log(555, decorator)
 
 const imagePlugin = createImagePlugin({ decorator });
 

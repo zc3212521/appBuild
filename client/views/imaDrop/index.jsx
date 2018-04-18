@@ -16,11 +16,12 @@ import createFocusPlugin from '../component/draft-js-focus-plugin/src';
 
 import createBlockDndPlugin from '../component/draft-js-drag-n-drop-plugin/src';
 
+import createSideToolbarPlugin from '../component/draft-js-side-toolbar-plugin/src';
+
 // import createDragNDropUploadPlugin from '../component/draft-js-drag-n-drop-upload-plugin/src';
 import editorStyles from './editorStyles.css';
 import mockUpload from './mockUpload';
 import ImageAdd from './ImageAdd';
-
 const focusPlugin = createFocusPlugin();
 // const resizeablePlugin = createResizeablePlugin();
 const blockDndPlugin = createBlockDndPlugin();
@@ -40,13 +41,18 @@ const imagePlugin = createImagePlugin({ decorator });
 //     addImage: imagePlugin.addImage,
 // });
 
+// 侧边栏组件
+const sideToolbarPlugin = createSideToolbarPlugin();
+const { SideToolbar } = sideToolbarPlugin;
+
 const plugins = [
     // dragNDropFileUploadPlugin,
     blockDndPlugin,
     focusPlugin,
     // alignmentPlugin,
     // resizeablePlugin,
-    imagePlugin
+    imagePlugin,
+    sideToolbarPlugin
 ];
 
 /* eslint-disable */
@@ -118,7 +124,9 @@ export default class CustomImageEditor extends Component {
                         plugins={plugins}
                         ref={(element) => { this.editor = element; }}
                     />
+                    <SideToolbar />
                 </div>
+
                 <ImageAdd
                     editorState={this.state.editorState}
                     onChange={this.onChange}

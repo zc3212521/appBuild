@@ -5,6 +5,7 @@ const createStore = (initialState) => {
   const subscribeToItem = (key, callback) => {
     listeners[key] = listeners[key] || [];
     listeners[key].push(callback);
+    console.log('listeners[key]', listeners,key, callback)
   };
 
   const unsubscribeFromItem = (key, callback) => {

@@ -25,6 +25,7 @@ export default (config = {}) => {
     structure,
     theme,
   };
+  console.log('structure', structure)
 
   return {
     initialize: ({ setEditorState, getEditorState, getEditorRef }) => {

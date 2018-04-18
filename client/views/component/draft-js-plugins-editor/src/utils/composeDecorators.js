@@ -12,7 +12,6 @@ export default (...funcs) => {
   const last = funcs[funcs.length - 1];
 
   return (...args) => {
-      console.log(121212, ...args)
     let result = last(...args);
     for (let i = funcs.length - 2; i >= 0; i -= 1) {
       const f = funcs[i];

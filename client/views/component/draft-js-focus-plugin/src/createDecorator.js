@@ -8,7 +8,6 @@ const getDisplayName = (WrappedComponent) => {
 };
 
 export default ({ theme, blockKeyStore }) => {
-  console.log(116, theme);
   return (
       (WrappedComponent) => class BlockFocusDecorator extends Component {
           static displayName = `BlockFocus(${getDisplayName(WrappedComponent)})`;
@@ -26,7 +25,6 @@ export default ({ theme, blockKeyStore }) => {
 
           onClick = (evt) => {
               evt.preventDefault();
-              console.log(777, this.props.blockProps.isFocused)
               if (!this.props.blockProps.isFocused) {
                   this.props.blockProps.setFocusToBlock();
               }
@@ -38,9 +36,6 @@ export default ({ theme, blockKeyStore }) => {
               const combinedClassName = isFocused
                   ? unionClassNames(className, theme.focused)
                   : unionClassNames(className, theme.unfocused);
-
-              console.log(111222, isFocused, theme.focused)
-              console.log(160, this.props)
               return (
                   <WrappedComponent
                       {...this.props}
