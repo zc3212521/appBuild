@@ -5,7 +5,6 @@ import {AppContainer} from 'react-hot-loader' //热更替相关
 import {BrowserRouter} from 'react-router-dom'
 import {Provider} from 'mobx-react'
 import App from './views/App.jsx'
-
 // import appState from './store/app.state'
 
 console.log("process.env.NODE_ENV = ", process.env.NODE_ENV)

@@ -1,19 +1,19 @@
 import React from 'react';
 import { Button } from 'antd';
 
-import {
-    HeadlineOneButton,
-    HeadlineTwoButton,
-    BlockquoteButton,
-    CodeBlockButton,
-    UnorderedListButton,
-    OrderedListButton,
-} from 'draft-js-buttons';
+import Img from './addImg';
+import Video from './addVideo';
+import Audio from './addAudio';
 
-import BlockTypeSelect from '../BlockTypeSelect';
+import MediaTypeSelect from './MediaTypeSelect';
 
 const InsertMedia = ({ getEditorState, setEditorState, theme }) => (
-    <Button type='gost' icon='upload'/>
+    <MediaTypeSelect
+        getEditorState={getEditorState}
+        setEditorState={setEditorState}
+        theme={theme}
+        structure={[Img, Video, Audio]}
+    />
 );
 
 export default InsertMedia;

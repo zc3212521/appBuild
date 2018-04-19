@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { Icon, Button } from 'antd';
 import {
     convertFromRaw,
     EditorState,
 } from 'draft-js';
+
+import '../../resource/iconfont/iconfont.less'
 
 import Editor, { composeDecorators } from '../component/draft-js-plugins-editor/src';
 

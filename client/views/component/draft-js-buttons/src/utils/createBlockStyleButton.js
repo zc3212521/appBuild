@@ -35,7 +35,6 @@ export default ({ blockType, children }) => (
 
     render() {
       const { theme } = this.props;
-      console.log(123, theme)
       const className = this.blockTypeIsActive() ? 'primary' : 'gost';
       return (
         <div
@@ -45,9 +44,9 @@ export default ({ blockType, children }) => (
         >
           <Button
             type={className}
-            style={{height:'34px',width:'.6px',fontSize:'18px'}}
             onClick={this.toggleStyle}
             children={children}
+            style={{width:'36px', height:'36px'}}
           />
         </div>
       );
