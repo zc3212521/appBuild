@@ -80,11 +80,11 @@ const initialState = {
         "type": "atomic",
         "depth": 0,
         "inlineStyleRanges": [],
-        "entityRanges": [{
-            "offset": 0,
-            "length": 1,
-            "key": 0
-        }],
+        // "entityRanges": [{
+        //     "offset": 0,
+        //     "length": 1,
+        //     "key": 0
+        // }],
         "data": {}
     }, {
         "key": "e23a8",

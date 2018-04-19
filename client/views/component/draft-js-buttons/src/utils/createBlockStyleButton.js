@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { RichUtils } from 'draft-js';
 import unionClassNames from 'union-class-names';
+import { Button } from 'antd'
 
 export default ({ blockType, children }) => (
   class BlockStyleButton extends Component {
@@ -34,16 +35,18 @@ export default ({ blockType, children }) => (
 
     render() {
       const { theme } = this.props;
-      const className = this.blockTypeIsActive() ? unionClassNames(theme.button, theme.active) : theme.button;
+      console.log(123, theme)
+      const className = this.blockTypeIsActive() ? 'primary' : 'gost';
       return (
         <div
           className={theme.buttonWrapper}
           onMouseDown={this.preventBubblingUp}
+          style={{display:'inline-block'}}
         >
-          <button
-            className={className}
+          <Button
+            type={className}
+            style={{height:'34px',width:'.6px',fontSize:'18px'}}
             onClick={this.toggleStyle}
-            type="button"
             children={children}
           />
         </div>

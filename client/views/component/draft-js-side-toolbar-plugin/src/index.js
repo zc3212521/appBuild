@@ -2,12 +2,14 @@ import decorateComponentWithProps from 'decorate-component-with-props';
 import createStore from './utils/createStore';
 import Toolbar from './components/Toolbar';
 import DefaultBlockTypeSelect from './components/DefaultBlockTypeSelect';
+import InsertMedia from './components/InsertMedia';
 import buttonStyles from './buttonStyles.css';
 import blockTypeSelectStyles from './blockTypeSelectStyles.css';
 import toolbarStyles from './toolbarStyles.css';
 
 export default (config = {}) => {
   const defaultTheme = { buttonStyles, blockTypeSelectStyles, toolbarStyles };
+
 
   const store = createStore({
     isVisible: false,
@@ -16,7 +18,8 @@ export default (config = {}) => {
   const {
     theme = defaultTheme,
     structure = [
-      DefaultBlockTypeSelect
+      DefaultBlockTypeSelect,
+        InsertMedia
     ]
   } = config;
 
@@ -25,7 +28,6 @@ export default (config = {}) => {
     structure,
     theme,
   };
-  console.log('structure', structure)
 
   return {
     initialize: ({ setEditorState, getEditorState, getEditorRef }) => {
