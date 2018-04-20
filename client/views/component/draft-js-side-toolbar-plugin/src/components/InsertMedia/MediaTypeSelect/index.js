@@ -7,7 +7,8 @@ export default class BlockTypeSelect extends React.Component {
     state = {
         style: {
             transform: 'translate(-50%) scale(0)',
-        }
+        },
+        onEnter: false
     }
 
     onMouseEnter = () => {
@@ -16,15 +17,16 @@ export default class BlockTypeSelect extends React.Component {
                 transform: 'translate(-50%) scale(1)',
                 transition: 'transform 0.15s cubic-bezier(.3,1.2,.2,1)',
             },
+            onEnter: true
         });
     }
 
     onMouseLeave = () => {
-        return
         this.setState({
             style: {
                 transform: 'translate(-50%) scale(0)',
             },
+            onEnter: false
         });
     }
 
@@ -35,6 +37,10 @@ export default class BlockTypeSelect extends React.Component {
 
     render() {
         const { theme, getEditorState, setEditorState } = this.props;
+        let spacer = "";
+        if(this.state.onEnter) {
+            spacer = <div className={theme.blockTypeSelectStyles.spacer} />
+        }
         return (
             <div
                 style={{display:'inline-block'}}
@@ -43,11 +49,7 @@ export default class BlockTypeSelect extends React.Component {
                 onMouseDown={this.onClick}
             >
                 <Button type='gost' icon='upload'/>
-                {/*
-          The spacer is needed so the popup doesn't go away when moving from the
-          blockType div to the popup.
-        */}
-                <div className={theme.blockTypeSelectStyles.spacer} />
+                { spacer }
                 <div className={theme.blockTypeSelectStyles.popup} style={this.state.style}>
                     {this.props.structure.map((Component, index) => (
                         <Component

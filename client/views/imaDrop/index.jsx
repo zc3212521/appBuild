@@ -130,11 +130,11 @@ export default class CustomImageEditor extends Component {
                     <SideToolbar />
                 </div>
 
-                <ImageAdd
-                    editorState={this.state.editorState}
-                    onChange={this.onChange}
-                    modifier={imagePlugin.addImage}
-                />
+                {/*<ImageAdd*/}
+                    {/*editorState={this.state.editorState}*/}
+                    {/*onChange={this.onChange}*/}
+                    {/*modifier={imagePlugin.addImage}*/}
+                {/*/>*/}
             </div>
         );
     }

@@ -3,5 +3,5 @@ import createBlockStyleButton from '../../utils/createBlockStyleButton';
 
 export default createBlockStyleButton({
   blockType: 'header-two',
-  children: <i className='iconfont icon-h1' />,
+  children: <i className='iconfont icon-h2' />,
 });
