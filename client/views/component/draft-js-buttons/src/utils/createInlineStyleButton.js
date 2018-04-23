@@ -31,7 +31,8 @@ export default ({ style, children }) => (
         >
           <button
             className={className}
-            onClick={this.toggleStyle}
+            onClick=
+                {this.toggleStyle}
             type="button"
             children={children}
           />

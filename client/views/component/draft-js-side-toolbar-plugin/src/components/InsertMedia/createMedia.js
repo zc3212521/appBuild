@@ -10,7 +10,8 @@ export default ({ mediaType, children }) => (
             super(props)
             this.state = {
                 up:false,
-                img:[]
+                img:[],
+                fileType: ''
             }
             this.addMedia = this.addMedia.bind(this)
             this.getPictures = this.getPictures.bind(this)
@@ -20,17 +21,29 @@ export default ({ mediaType, children }) => (
 
         addMedia = (e) => {
             console.log(mediaType, this.props);
+            // this.props.addMedia(mediaType)
             this.setState({
-                up:true
+                up:true,
+                fileType: mediaType
             })
         }
 
         preventBubblingUp = (event) => { event.preventDefault(); }
 
-        getPictures(pic) {
-            console.log('pic', pic)
+        getPictures(pictureList) {
+            let picList = pictureList.map(item => {
+                if (typeof(item.url) !== 'undefined') {
+                    return item.url
+                }
+            });
+
             this.setState({
-                img: pic
+                img: picList,
+                up: false
+            })
+            picList.map(item => {
+                let editorState = this.props.modifier(this.props.getEditorState(), item, {name:'haha'})
+                this.props.setEditorState(editorState)
             })
         }
 
@@ -66,8 +79,7 @@ export default ({ mediaType, children }) => (
                     <Modal
                         title="选择图片"
                         visible={this.state.up}
-                        onOk={this.handlePictureSeletorOK}
-                        onCancel={this.handlePictureSeletorCancel}
+                        footer={null}
                         okText="选择"
                         cancelText="取消"
                     >
@@ -76,7 +88,7 @@ export default ({ mediaType, children }) => (
                             cbReceiver={this.getPictures}
                             isMultiple={true}
                             isShowUploadList={false}
-                            fileType="image"
+                            fileType={this.state.fileType}
                             limit={10}/>
                     </Modal>
                 </div>

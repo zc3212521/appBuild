@@ -86,7 +86,6 @@ class UploadFile extends Component {
         if (fileList.some((item, index) => item.status === "uploading")) {
             console.log("文件正在上传，上传文件:", info.fileList)
             this.setState({files: fileList})
-            this.props.cbReceiver(this.state.files);
             if(upload_status === 'begin'){
 
                 upload_status = "";

@@ -1,45 +1,33 @@
 import React, { Component } from 'react';
-import { Card } from "antd"
 
+import Editor, { createEditorStateWithText } from '../component/draft-js-plugins-editor/src';
+
+import createInlineToolbarPlugin, { Separator } from '../component/draft-js-inline-toolbar-plugin/src';
 import {
-    convertFromRaw,
-    EditorState,
-} from 'draft-js';
+    ItalicButton,
+    BoldButton,
+    UnderlineButton,
+    CodeButton,
+} from '../component/draft-js-buttons/src';
+import editorStyles from './editorStyles.css';
 
-import Editor, { createEditorStateWithText, composeDecorators  } from '../component/draft-js-plugins-editor/src';
+const inlineToolbarPlugin = createInlineToolbarPlugin({
+    structure: [
+        BoldButton,
+        ItalicButton,
+        UnderlineButton,
+        CodeButton,
+        Separator,
+    ]
+});
+const { InlineToolbar } = inlineToolbarPlugin;
+const plugins = [inlineToolbarPlugin];
+const text = 'In this editor a toolbar shows up once you select part of the text …';
 
-import createImagePlugin from '../component/draft-js-image-plugin/src';
-// import createAlignmentPlugin from '../component/draft-js-alignment-plugin/src';
-import createFocusPlugin from '../component/draft-js-focus-plugin/src';
-// import createResizeablePlugin from '../component/draft-js-resizeable-plugin/src';
-
-import createBlockDndPlugin from '../component/draft-js-drag-n-drop-plugin/src';
-
-// import createDragNDropUploadPlugin from '../component/draft-js-drag-n-drop-upload-plugin/src';
-import './editorStyles.css'
-// import mockUpload from './mockUpload';
-import ImageAdd from './ImageAdd';
-
-const focusPlugin = createFocusPlugin();
-const blockDndPlugin = createBlockDndPlugin();
-
-const decorator = composeDecorators(
-    focusPlugin.decorator,
-    blockDndPlugin.decorator
-);
-
-const imagePlugin = createImagePlugin({ decorator });
-
-const plugins = [
-    blockDndPlugin,
-    focusPlugin,
-    imagePlugin
-];
-
-export default class CustomImageEditor extends Component {
+export default class CustomInlineToolbarEditor extends Component {
 
     state = {
-        editorState: EditorState.createEmpty()
+        editorState: createEditorStateWithText(text),
     };
 
     onChange = (editorState) => {
@@ -54,23 +42,14 @@ export default class CustomImageEditor extends Component {
 
     render() {
         return (
-            <div>
-                <Card>
-                    <div onClick={this.focus} className='editor'>
-                        <Editor
-                            editorState={this.state.editorState}
-                            onChange={this.onChange}
-                            plugins={plugins}
-                            ref={(element) => { this.editor = element; }}
-                        />
-
-                    </div>
-                    <ImageAdd
-                        editorState={this.state.editorState}
-                        onChange={this.onChange}
-                        modifier={imagePlugin.addImage}
-                    />
-                </Card>
+            <div className={editorStyles.editor} onClick={this.focus}>
+                <Editor
+                    editorState={this.state.editorState}
+                    onChange={this.onChange}
+                    plugins={plugins}
+                    ref={(element) => { this.editor = element; }}
+                />
+                <InlineToolbar />
             </div>
         );
     }

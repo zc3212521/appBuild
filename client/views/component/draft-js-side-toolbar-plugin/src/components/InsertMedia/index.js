@@ -7,12 +7,13 @@ import Audio from './addAudio';
 
 import MediaTypeSelect from './MediaTypeSelect';
 
-const InsertMedia = ({ getEditorState, setEditorState, theme }) => (
+const InsertMedia = ({ getEditorState, setEditorState, theme, modifier }) => (
     <MediaTypeSelect
         getEditorState={getEditorState}
         setEditorState={setEditorState}
         theme={theme}
         structure={[Img, Video, Audio]}
+        modifier={modifier}
     />
 );
 

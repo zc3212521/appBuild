@@ -67,6 +67,7 @@ export default class Toolbar extends React.Component {
             getEditorState={store.getItem('getEditorState')}
             setEditorState={store.getItem('setEditorState')}
             theme={theme}
+            modifier={this.props.modifier}
           />
         ))}
       </div>

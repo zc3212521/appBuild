@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Icon, Button } from 'antd';
 import {
     convertFromRaw,
     EditorState,
@@ -11,51 +10,55 @@ import Editor, { composeDecorators } from '../component/draft-js-plugins-editor/
 
 import createImagePlugin from '../component/draft-js-image-plugin/src';
 
-import createAlignmentPlugin from '../component/draft-js-alignment-plugin/src';
-
 import createFocusPlugin from '../component/draft-js-focus-plugin/src';
-
-// import createResizeablePlugin from '../component/draft-js-resizeable-plugin/src';
 
 import createBlockDndPlugin from '../component/draft-js-drag-n-drop-plugin/src';
 
 import createSideToolbarPlugin from '../component/draft-js-side-toolbar-plugin/src';
 
-// import createDragNDropUploadPlugin from '../component/draft-js-drag-n-drop-upload-plugin/src';
+import createInlineToolbarPlugin, { Separator } from '../component/draft-js-inline-toolbar-plugin/src';
+
 import editorStyles from './editorStyles.css';
-import mockUpload from './mockUpload';
-import ImageAdd from './ImageAdd';
+
 const focusPlugin = createFocusPlugin();
-// const resizeablePlugin = createResizeablePlugin();
+
 const blockDndPlugin = createBlockDndPlugin();
-// const alignmentPlugin = createAlignmentPlugin();
-// const { AlignmentTool } = alignmentPlugin;
 
 const decorator = composeDecorators(
-    // resizeablePlugin.decorator,
-    // alignmentPlugin.decorator,
     focusPlugin.decorator,
     blockDndPlugin.decorator
 );
 const imagePlugin = createImagePlugin({ decorator });
 
-// const dragNDropFileUploadPlugin = createDragNDropUploadPlugin({
-//     handleUpload: mockUpload,
-//     addImage: imagePlugin.addImage,
-// });
+import {
+    ItalicButton,
+    BoldButton,
+    UnderlineButton,
+    CodeButton,
+} from '../component/draft-js-buttons/src';
 
 // 侧边栏组件
 const sideToolbarPlugin = createSideToolbarPlugin();
 const { SideToolbar } = sideToolbarPlugin;
 
+// 行内组件
+const inlineToolbarPlugin = createInlineToolbarPlugin({
+    structure: [
+        BoldButton,
+        ItalicButton,
+        UnderlineButton,
+        CodeButton,
+        Separator,
+    ]
+});
+const { InlineToolbar } = inlineToolbarPlugin;
+
 const plugins = [
-    // dragNDropFileUploadPlugin,
     blockDndPlugin,
     focusPlugin,
-    // alignmentPlugin,
-    // resizeablePlugin,
     imagePlugin,
-    sideToolbarPlugin
+    sideToolbarPlugin,
+    inlineToolbarPlugin
 ];
 
 /* eslint-disable */
@@ -119,7 +122,7 @@ export default class CustomImageEditor extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{padding:'50px'}}>
                 <div className={editorStyles.editor} onClick={this.focus}>
                     <Editor
                         editorState={this.state.editorState}
@@ -127,14 +130,9 @@ export default class CustomImageEditor extends Component {
                         plugins={plugins}
                         ref={(element) => { this.editor = element; }}
                     />
-                    <SideToolbar />
+                    <SideToolbar modifier={imagePlugin.addImage}/>
+                    <InlineToolbar />
                 </div>
-
-                {/*<ImageAdd*/}
-                    {/*editorState={this.state.editorState}*/}
-                    {/*onChange={this.onChange}*/}
-                    {/*modifier={imagePlugin.addImage}*/}
-                {/*/>*/}
             </div>
         );
     }
