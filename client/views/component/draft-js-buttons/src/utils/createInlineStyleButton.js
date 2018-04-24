@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { RichUtils } from 'draft-js';
 import unionClassNames from 'union-class-names';
+import { Button } from 'antd'
 
 export default ({ style, children }) => (
   class InlineStyleButton extends Component {
@@ -23,19 +24,18 @@ export default ({ style, children }) => (
 
     render() {
       const { theme } = this.props;
-      const className = this.styleIsActive() ? unionClassNames(theme.button, theme.active) : theme.button;
+      const className = this.styleIsActive() ? 'primary' : 'gost';
       return (
         <div
           className={theme.buttonWrapper}
           onMouseDown={this.preventBubblingUp}
         >
-          <button
-            className={className}
-            onClick=
-                {this.toggleStyle}
-            type="button"
-            children={children}
-          />
+            <Button
+                type={className}
+                onClick={this.toggleStyle}
+                children={children}
+                style={{width:'36px', height:'36px'}}
+            />
         </div>
       );
     }

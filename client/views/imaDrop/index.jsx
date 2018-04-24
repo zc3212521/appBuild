@@ -4,7 +4,9 @@ import {
     EditorState,
 } from 'draft-js';
 
-import '../../resource/iconfont/iconfont.less'
+import '../../resource/iconfont/iconfont.less';
+
+import colors from './ColorsToggle/colors';
 
 import Editor, { composeDecorators } from '../component/draft-js-plugins-editor/src';
 
@@ -17,6 +19,8 @@ import createBlockDndPlugin from '../component/draft-js-drag-n-drop-plugin/src';
 import createSideToolbarPlugin from '../component/draft-js-side-toolbar-plugin/src';
 
 import createInlineToolbarPlugin, { Separator } from '../component/draft-js-inline-toolbar-plugin/src';
+
+import ColorsButton from './ColorsToggle';
 
 import editorStyles from './editorStyles.css';
 
@@ -49,7 +53,9 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
         UnderlineButton,
         CodeButton,
         Separator,
-    ]
+        ColorsButton
+    ],
+    customStyleMap: colors
 });
 const { InlineToolbar } = inlineToolbarPlugin;
 

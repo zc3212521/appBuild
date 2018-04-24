@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 
 export default class BlockTypeSelect extends React.Component {
 
@@ -48,7 +48,8 @@ export default class BlockTypeSelect extends React.Component {
         onMouseLeave={this.onMouseLeave}
         onMouseDown={this.onClick}
       >
-          <Button type='gost' icon='ellipsis'/>
+          {/*<Button type='gost' icon='ellipsis'/>*/}
+          <Icon type='ellipsis' style={{color:'#333',fontSize:'16px'}}/>
           { spacer }
         <div className={theme.blockTypeSelectStyles.popup} style={this.state.style}>
           {this.props.structure.map((Component, index) => (

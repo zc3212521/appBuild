@@ -20,8 +20,6 @@ export default ({ mediaType, children }) => (
         }
 
         addMedia = (e) => {
-            console.log(mediaType, this.props);
-            // this.props.addMedia(mediaType)
             this.setState({
                 up:true,
                 fileType: mediaType

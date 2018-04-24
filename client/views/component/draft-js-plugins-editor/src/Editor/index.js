@@ -10,6 +10,7 @@ import proxies from './proxies';
 import moveSelectionToEnd from './moveSelectionToEnd';
 import resolveDecorators from './resolveDecorators';
 import * as defaultKeyBindingPlugin from './defaultKeyBindingPlugin';
+import addSticker from "../../../draft-js-sticker-plugin/src/modifiers/addSticker";
 
 /**
  * The main editor component

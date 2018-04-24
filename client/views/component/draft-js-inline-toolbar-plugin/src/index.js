@@ -4,7 +4,7 @@ import {
   BoldButton,
   UnderlineButton,
   CodeButton,
-} from 'draft-js-buttons';
+} from '../../draft-js-buttons/src';
 import createStore from './utils/createStore';
 import Toolbar from './components/Toolbar';
 import Separator from './components/Separator';

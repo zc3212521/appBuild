@@ -1,3 +1,4 @@
+import React from 'react';
 import decorateComponentWithProps from 'decorate-component-with-props';
 import createStore from './utils/createStore';
 import Toolbar from './components/Toolbar';
@@ -6,6 +7,8 @@ import InsertMedia from './components/InsertMedia';
 import buttonStyles from './buttonStyles.css';
 import blockTypeSelectStyles from './blockTypeSelectStyles.css';
 import toolbarStyles from './toolbarStyles.css';
+
+const Separate = () => (<span>&nbsp;&nbsp;&nbsp;</span>);
 
 export default (config = {}) => {
   const defaultTheme = { buttonStyles, blockTypeSelectStyles, toolbarStyles };
@@ -19,6 +22,7 @@ export default (config = {}) => {
     theme = defaultTheme,
     structure = [
       DefaultBlockTypeSelect,
+        Separate,
         InsertMedia
     ]
   } = config;

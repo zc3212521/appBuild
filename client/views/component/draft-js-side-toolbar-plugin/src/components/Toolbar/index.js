@@ -46,7 +46,7 @@ export default class Toolbar extends React.Component {
       this.setState({
         position: {
           top: (top + scrollY),
-          left: editorNode.getBoundingClientRect().left - 90,
+          left: editorNode.getBoundingClientRect().left - 70,
           transform: 'scale(1)',
           transition: 'transform 0.15s cubic-bezier(.3,1.2,.2,1)',
         },
