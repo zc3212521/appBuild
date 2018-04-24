@@ -12,28 +12,34 @@ const COLORS = [
     {label: 'Violet', style: 'violet'},
 ];
 
+// export default () =>  COLORS.map((color, i) => (
+//             <div key={ `color-${i}`}>
+//                 {
+//                     CreateColorButton({
+//                         style: color.style,
+//                         children: <span className={styleSpan.colorSpan} />,
+//                     })
+//                 }
+//                 {color.style}
+//             </div>
+//         ))
+
 export default class ColorsButton extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
-        let ColorGroup = COLORS.map((color, i) => (
-            <div key={ `color-${i}`}>
-                {
-                    CreateColorButton({
-                        style: color.style,
-                        children: (<span className={styleSpan.colorSpan} />),
-                    })
-                }
-            </div>
-        ));
-        console.log(555, ColorGroup)
-        return COLORS.map((color, i) => (
-            <div key={ `color-${i}`}>
-                {
-                    CreateColorButton({
-                        style: color.style,
-                        children: (<span className={styleSpan.colorSpan} />),
-                    })
-                }
-            </div>
-        ))
+        let Buttons = COLORS.map((color, i) => {
+            let Btns = CreateColorButton({
+                style: color.style,
+                children: <span className={styleSpan.colorSpan} />,
+            });
+            return <Btns key={i}/>
+        })
+        console.log(888, Buttons)
+
+        // Buttons =
+        return <div>{Buttons}</div>
     }
 }
