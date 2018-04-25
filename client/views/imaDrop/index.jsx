@@ -20,6 +20,8 @@ import createSideToolbarPlugin from '../component/draft-js-side-toolbar-plugin/s
 
 import createInlineToolbarPlugin, { Separator } from '../component/draft-js-inline-toolbar-plugin/src';
 
+import createLinkPlugin from '../component/draft-js-anchor-plugin/src';
+
 import ColorsButton from './ColorsToggle';
 
 import editorStyles from './editorStyles.css';
@@ -45,6 +47,8 @@ import {
 const sideToolbarPlugin = createSideToolbarPlugin();
 const { SideToolbar } = sideToolbarPlugin;
 
+const linkPlugin = createLinkPlugin();
+
 // 行内组件
 const inlineToolbarPlugin = createInlineToolbarPlugin({
     structure: [
@@ -52,11 +56,13 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
         ItalicButton,
         UnderlineButton,
         CodeButton,
+        linkPlugin.LinkButton,
         Separator,
-        ColorsButton
+        ColorsButton,
     ],
     // customStyleMap: colors  //todo not work
 });
+
 const { InlineToolbar } = inlineToolbarPlugin;
 
 const plugins = [
@@ -64,7 +70,8 @@ const plugins = [
     focusPlugin,
     imagePlugin,
     sideToolbarPlugin,
-    inlineToolbarPlugin
+    inlineToolbarPlugin,
+    linkPlugin,
 ];
 
 /* eslint-disable */

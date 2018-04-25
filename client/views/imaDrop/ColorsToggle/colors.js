@@ -16,10 +16,7 @@ const colors = {
     },
     indigo: {
         color: 'rgba(127, 0, 255, 1.0)',
-    },
-    violet: {
-        color: 'rgba(75, 0, 130, 1.0)',
-    },
+    }
 };
 
 export default colors;
