@@ -15,10 +15,10 @@ const colors = {
         color: 'rgba(0, 0, 255, 1.0)',
     },
     indigo: {
-        color: 'rgba(75, 0, 130, 1.0)',
+        color: 'rgba(127, 0, 255, 1.0)',
     },
     violet: {
-        color: 'rgba(127, 0, 255, 1.0)',
+        color: 'rgba(75, 0, 130, 1.0)',
     },
 };
 

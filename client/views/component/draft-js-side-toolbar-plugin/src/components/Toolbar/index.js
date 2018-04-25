@@ -36,8 +36,17 @@ export default class Toolbar extends React.Component {
     // Note: need to wait on tick to make sure the DOM node has been create by Draft.js
     setTimeout(() => {
       const node = document.querySelectorAll(`[data-offset-key="${offsetKey}"]`)[0];
-      const top = node.getBoundingClientRect().top;
-
+        let top;
+        switch(node.tagName){
+            case 'H1' :
+              top = node.getBoundingClientRect().top + 6;
+              break;
+            case "H2" :
+              top = node.getBoundingClientRect().top ;
+              break;
+            default:
+                top = node.getBoundingClientRect().top - 6;
+        }
       const editorComp = this.props.store.getItem('getEditorRef')();
       // this keeps backwards-compatibility with react 15
       const editorNode = editorComp.refs.editor ? editorComp.refs.editor : editorComp.editor;
@@ -46,7 +55,7 @@ export default class Toolbar extends React.Component {
       this.setState({
         position: {
           top: (top + scrollY),
-          left: editorNode.getBoundingClientRect().left - 70,
+          left: editorNode.getBoundingClientRect().left - 100,
           transform: 'scale(1)',
           transition: 'transform 0.15s cubic-bezier(.3,1.2,.2,1)',
         },

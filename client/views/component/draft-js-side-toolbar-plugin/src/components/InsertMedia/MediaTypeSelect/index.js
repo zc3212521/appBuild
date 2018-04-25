@@ -48,8 +48,8 @@ export default class BlockTypeSelect extends React.Component {
                 onMouseLeave={this.onMouseLeave}
                 onMouseDown={this.onClick}
             >
-                {/*<Button type='gost' icon='plus'/>*/}
-                <Icon type='plus' style={{color:'#333',fontSize:'16px'}}/>
+                <Button type='gost' icon='plus'/>
+                {/*<Icon type='plus' style={{color:'#333',fontSize:'16px'}}/>*/}
                 { spacer }
                 <div className={theme.blockTypeSelectStyles.popup} style={this.state.style}>
                     {this.props.structure.map((Component, index) => (

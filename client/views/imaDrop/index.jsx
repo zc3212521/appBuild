@@ -55,7 +55,7 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
         Separator,
         ColorsButton
     ],
-    customStyleMap: colors
+    // customStyleMap: colors  //todo not work
 });
 const { InlineToolbar } = inlineToolbarPlugin;
 
@@ -131,6 +131,7 @@ export default class CustomImageEditor extends Component {
             <div style={{padding:'50px'}}>
                 <div className={editorStyles.editor} onClick={this.focus}>
                     <Editor
+                        customStyleMap={colors}
                         editorState={this.state.editorState}
                         onChange={this.onChange}
                         plugins={plugins}
