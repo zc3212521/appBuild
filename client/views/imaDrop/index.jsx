@@ -47,7 +47,7 @@ import {
 const sideToolbarPlugin = createSideToolbarPlugin();
 const { SideToolbar } = sideToolbarPlugin;
 
-const linkPlugin = createLinkPlugin();
+const linkPlugin = createLinkPlugin({placeholder:'输入链接后键入Enter确认'});
 
 // 行内组件
 const inlineToolbarPlugin = createInlineToolbarPlugin({

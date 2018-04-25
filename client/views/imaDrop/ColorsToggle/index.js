@@ -1,7 +1,6 @@
 import React from 'react';
 import { RichUtils, EditorState, Modifier } from 'draft-js';
 import { Button } from 'antd';
-import CreateColorButton from './creatColorsButton';
 import styleSpan from './StyleSpan.css';
 import colors from './colors';
 import 'immutable';
@@ -61,6 +60,6 @@ export default class ColorsButton extends React.Component {
             )
         })
 
-        return Buttons
+        return <div>{ Buttons }</div>
     }
 }
