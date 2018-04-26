@@ -46,7 +46,7 @@ export default ({ blockType, children }) => (
             type={className}
             onClick={this.toggleStyle}
             children={children}
-            style={{width:'36px', height:'36px'}}
+            style={{width:'36px', height:'36px', padding:'0'}}
           />
         </div>
       );

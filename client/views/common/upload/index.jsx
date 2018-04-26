@@ -177,23 +177,13 @@ class UploadFile extends Component {
             },
             multiple: properties.isMultiple || false,
             beforeUpload: this.beforeUpload.bind(this),
-            showUploadList: properties.isShowUploadList ? properties.isShowUploadList : true
+            showUploadList: (properties.isShowUploadList === false) ? false : true
         };
-        // console.log("uploadProps",uploadProps);
+        console.log("uploadProps",uploadProps);
         return (
-            <div>
-                <Upload {...uploadProps}>
-                    <Button>
-                        <Icon type="upload"/>
-                        点击上传
-                    </Button>
-                </Upload>
-                <span>{`${this.props.limit > 1
-                    ? "最多"
-                    : "只"}可以上传 ${this.props.limit} 个类型为 ${PRO_QINIU.supportMime[this.props.fileType].join("、")} 的 ${this.props.fileType} 文件。${
-                    this.props.fileType == "image" ? "推荐安装“Hover Zoom+”扩展支持，安装方法点击系统首页。" : "" + this.props.description
-                    }`}</span>
-            </div>
+            <Upload {...uploadProps}>
+                {this.props.children}
+            </Upload>
         )
     }
 }

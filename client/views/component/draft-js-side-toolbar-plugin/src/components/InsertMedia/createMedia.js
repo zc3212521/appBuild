@@ -1,7 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import React, { Component } from 'react';
 import { RichUtils } from 'draft-js';
-import { Button, Modal } from 'antd';
+import { Button, Modal, message } from 'antd';
 import UploadFile from '../../../../../common/upload'
 
 export default ({ mediaType, children }) => (
@@ -20,6 +20,7 @@ export default ({ mediaType, children }) => (
         }
 
         addMedia = (e) => {
+            message.loading("上传中...", 0)
             this.setState({
                 up:true,
                 fileType: mediaType
@@ -29,6 +30,7 @@ export default ({ mediaType, children }) => (
         preventBubblingUp = (event) => { event.preventDefault(); }
 
         getPictures(pictureList) {
+            message.destroy();
             let picList = pictureList.map(item => {
                 if (typeof(item.url) !== 'undefined') {
                     return item.url
@@ -40,7 +42,7 @@ export default ({ mediaType, children }) => (
                 up: false
             })
             picList.map(item => {
-                let editorState = this.props.modifier(this.props.getEditorState(), item, {name:'haha'})
+                let editorState = this.props.modifier(mediaType, this.props.getEditorState(), item, {name:'haha'})
                 this.props.setEditorState(editorState)
             })
         }
@@ -67,28 +69,22 @@ export default ({ mediaType, children }) => (
                         className={theme.buttonWrapper}
                         onMouseDown={this.preventBubblingUp}
                     >
-                        <Button
-                            type={className}
-                            onClick={this.addMedia}
-                            children={children}
-                            style={{width:'36px', height:'36px'}}
-                        />
-                    </div>
-                    <Modal
-                        title="选择图片"
-                        visible={this.state.up}
-                        footer={null}
-                        okText="选择"
-                        cancelText="取消"
-                    >
                         <UploadFile
                             id="pictures"
                             cbReceiver={this.getPictures}
                             isMultiple={true}
                             isShowUploadList={false}
                             fileType={this.state.fileType}
-                            limit={10}/>
-                    </Modal>
+                            limit={10}>
+                            <Button
+                                type={className}
+                                onClick={this.addMedia}
+                                children={children}
+                                style={{width:'36px', height:'36px', padding:0}}
+                            />
+                        </UploadFile>
+
+                    </div>
                 </div>
             );
         }

@@ -3,8 +3,7 @@ import {
   AtomicBlockUtils,
 } from 'draft-js';
 
-export default (editorState, url, extraData) => {
-  const urlType = 'image';
+export default (urlType, editorState, url, extraData) => {
   const contentState = editorState.getCurrentContent();
   const contentStateWithEntity = contentState.createEntity(urlType, 'IMMUTABLE', { ...extraData, src: url });
   const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
