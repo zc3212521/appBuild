@@ -37,6 +37,7 @@ export default class Toolbar extends React.Component {
     setTimeout(() => {
       const node = document.querySelectorAll(`[data-offset-key="${offsetKey}"]`)[0];
         let top;
+        console.log('node', node)
         switch(node.tagName){
             case 'H1' :
               top = node.getBoundingClientRect().top + 6;

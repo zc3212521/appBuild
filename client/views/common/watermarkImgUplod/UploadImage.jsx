@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Upload, Button, Icon, message} from 'antd';
-import {PRO_URL, PRO_QINIU, PRO_COMMON} from './util';
+import {PRO_URL, PRO_QINIU, PRO_COMMON, PRO_REQUEST} from '../upload/util';
 import isEqual from "lodash/isEqual";
 import cloneDeep from "lodash/cloneDeep";
 import uniqBy from "lodash/uniqBy";
@@ -12,7 +12,7 @@ import uniqBy from "lodash/uniqBy";
  * type　必须属性，此属性指定上传文件的类型，img（图片）,video(mp4,mp3类型)
  * isMultiple 非必要属性，默认false，是否支持多文件同时上传，默认只允许单文件上传
  * */
-class UploadFile extends Component {
+class UploadImage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,13 +27,19 @@ class UploadFile extends Component {
     }
 
     componentDidMount() {
+        // console.log("componentDidMount this.props.fileList:", this.props.fileList);
         let list = [];
         if (!!this.props.fileList) {
+            console.log("come in")
             this.props.fileList.copyWithin(list);
+            console.log("查看copyWithin方法",this.props.fileList,list)
         }
         if (!!list) {
             this.setState({files: list});
         }
+    }
+    componentDidUpdate(){
+        console.log('state变化', this.state.files)
     }
 
     beforeUpload(file) {
@@ -61,14 +67,15 @@ class UploadFile extends Component {
 
             return isFormat;
         })
-        this.props.onStart(file)
+
+
     }
 
     onChange(info) {
         let fileList = cloneDeep(info.fileList);
         let upload_status = "begin";
         fileList = uniqBy(fileList, "name"); //去除重复的文件
-        console.log('onchange', info)
+        console.log('上传参数列表', fileList);
 
         //图片上传错误
         if (fileList.some((item, index) => item.status === "error")) {
@@ -80,6 +87,7 @@ class UploadFile extends Component {
         if (fileList.some((item, index) => item.status === "uploading")) {
             console.log("文件正在上传，上传文件:", info.fileList)
             this.setState({files: fileList})
+            this.props.cbReceiver(this.state.files);
             if(upload_status === 'begin'){
 
                 upload_status = "";
@@ -99,6 +107,18 @@ class UploadFile extends Component {
                 url = PRO_URL.WANGSU_IMG_DOMAIN_URL;
             } else if (this.props.fileType === "video" || this.props.fileType === "audio") {
                 url = PRO_URL.WANGSU_DOMAIN_VIDEO_URL;
+                // 处理视频分辨率需求，向接口传入filename
+                let file_key = fileList[0].originFileObj.keys;
+                console.log("file_key:" , file_key)
+                PRO_REQUEST.ajax.fetchData(PRO_URL.others.sendVideoName, {fileKey:file_key}, (data) => {
+                    if (data.rc == "0") {
+                        console.log("视频名称发送成功，后台开始转码")
+                    } else {
+                        message.error("视频转码操作不成功，此视频将不能切换分辨率播放。")
+                        console.log('视频名称发送失败，查看', data.des)
+                    }
+                })
+
             }
             console.log("请求文件前缀", url)
             //读取远程路径并显示链接
@@ -111,6 +131,24 @@ class UploadFile extends Component {
             console.log("准备上传给父组件", _this.state.files)
             _this.props.cbReceiver(_this.state.files);
         }
+    }
+
+    supportFileType(props, propName, componentName) {
+        componentName = componentName || 'ANONYMOUS';
+        if (props[propName]) {
+            let value = props[propName];
+            if (typeof value === 'string') {
+                var isInSupport = !!PRO_QINIU.supportMime[value];
+                return isInSupport
+                    ? null
+                    : new Error(propName + ' in ' + componentName + "不合法的上传资源类型！");
+            }
+        } else {
+            throw new Error(propName + ' in ' + componentName + "必须填写fileType（字符串型）：image或video或audio！");
+            return false;
+        }
+        // assume all ok
+        return null;
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
@@ -153,16 +191,25 @@ class UploadFile extends Component {
             },
             multiple: properties.isMultiple || false,
             beforeUpload: this.beforeUpload.bind(this),
-            showUploadList: (properties.isShowUploadList === false) ? false : true,
+            showUploadList: properties.isShowUploadList ? properties.isShowUploadList : true
         };
-        console.log("uploadProps",uploadProps);
+        // console.log("uploadProps",uploadProps);
         return (
-            <Upload {...uploadProps}>
-                {this.props.children}
-            </Upload>
+            <div>
+                <Upload {...uploadProps}>
+                    <Button>
+                        <Icon type="upload"/>
+                        点击上传
+                    </Button>
+                </Upload>
+                <span>{`${this.props.limit > 1
+                    ? "最多"
+                    : "只"}可以上传 ${this.props.limit} 个类型为 ${PRO_QINIU.supportMime[this.props.fileType].join("、")} 的 ${this.props.fileType} 文件。${
+                    this.props.fileType == "image" ? "推荐安装“Hover Zoom+”扩展支持，安装方法点击系统首页。" : "" + this.props.description
+                    }`}</span>
+            </div>
         )
     }
 }
 
-
-module.exports = UploadFile;
+module.exports = UploadImage;
