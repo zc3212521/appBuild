@@ -207,9 +207,7 @@ class GroupUpload extends Component {
     }
     // console.log("xianshi state",this.state)
   }
-  componentDidUpdate(){
-      console.log("xianshi state",this.state)
-  }
+
   render() {
     return (
       <span>

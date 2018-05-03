@@ -24,7 +24,6 @@ export default ({ store }) => (WrappedComponent) => (
       // If this is rendered before the store is initialized default to read only
       // NOTE(@mxstbr): Reference issue: draft-js-plugins/draft-js-plugins#926
       const readOnly = store.getReadOnly ? store.getReadOnly() : true;
-      console.log(4545, WrappedComponent)
       return (
         <WrappedComponent
           {...this.props}

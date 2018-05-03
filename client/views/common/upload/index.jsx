@@ -61,7 +61,7 @@ class UploadFile extends Component {
 
             return isFormat;
         })
-        this.props.onStart(file)
+        // this.props.onStart(file)
     }
 
     onChange(info) {
@@ -155,7 +155,6 @@ class UploadFile extends Component {
             beforeUpload: this.beforeUpload.bind(this),
             showUploadList: (properties.isShowUploadList === false) ? false : true,
         };
-        console.log("uploadProps",uploadProps);
         return (
             <Upload {...uploadProps}>
                 {this.props.children}

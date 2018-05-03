@@ -47,6 +47,7 @@ export default ({mediaType, children}) => (
         }
 
         getPictures(pictureList) {
+            console.log('getPictures', pictureList)
             message.destroy();
             let picList = pictureList.map(item => {
                 if (typeof(item.url) !== 'undefined') {
@@ -55,15 +56,19 @@ export default ({mediaType, children}) => (
             });
 
             console.log('foreditor', picList)
+            console.log('mediaType11111', mediaType);
             this.setState({
                 img: picList,
                 up: false
             })
             if(mediaType === 'watermarkImage') {
+                console.log('mediaType', mediaType);
                 mediaType = 'image';
             }
             picList.map(item => {
+                item = item.split('?')[0];
                 let editorState = this.props.modifier(mediaType, this.props.getEditorState(), item, {name: 'haha'})
+                console.log(4545, editorState.getSelection().toJS());
                 this.props.setEditorState(editorState)
             })
         }
