@@ -19,7 +19,8 @@ export default ({mediaType, children}) => (
                 loadingRemoteImageFun: null,
                 provisible: false,
                 previsible: false,
-                pfopImages: []
+                pfopImages: [],
+                down: false
             }
             this.addMedia = this.addMedia.bind(this)
             this.getPictures = this.getPictures.bind(this)
@@ -33,6 +34,7 @@ export default ({mediaType, children}) => (
             this.failureLoading = this.failureLoading.bind(this)
             this.reloadPfopingPictrue = this.reloadPfopingPictrue.bind(this)
             this.successLoading = this.successLoading.bind(this)
+            this.reback = this.reback.bind(this)
         }
 
         addMedia = (e) => {
@@ -55,8 +57,6 @@ export default ({mediaType, children}) => (
                 }
             });
 
-            console.log('foreditor', picList)
-            console.log('mediaType11111', mediaType);
             this.setState({
                 img: picList,
                 up: false
@@ -65,11 +65,12 @@ export default ({mediaType, children}) => (
                 console.log('mediaType', mediaType);
                 mediaType = 'image';
             }
-            picList.map(item => {
-                item = item.split('?')[0];
-                let editorState = this.props.modifier(mediaType, this.props.getEditorState(), item, {name: 'haha'})
-                console.log(4545, editorState.getSelection().toJS());
-                this.props.setEditorState(editorState)
+            picList.map((item, i) => {
+                setTimeout(() => {
+                    let editorState = this.props.modifier(mediaType, this.props.getEditorState(), item, {name: 'haha'})
+                    console.log(4545, mediaType, this.props.getEditorState().toJS(), item);
+                    this.props.setEditorState(editorState)
+                }, i*100)
             })
         }
 
@@ -90,15 +91,19 @@ export default ({mediaType, children}) => (
         }
 
         groupAppend(pictureList) {
-            // console.log("pictureList", pictureList);
-            if (!pictureList.length) {
-                // console.log("return false", pictureList.lenght);
-                return false;
-            }
+            let len = pictureList.length
+            if (!len) return false;
+
             let images = pictureList.map(item => {
                 return {"url": item};
             })
-            this.setState({previsible: true, "images": images});
+            let pfopImages = new Array(len);
+            pfopImages.fill(0);
+
+            this.setState({
+                images,
+                pfopImages
+            });
             this.prepareToSendImageToEditor()
         }
 
@@ -127,12 +132,10 @@ export default ({mediaType, children}) => (
                 : picture.length);
             let n = picture.substr((~picture.lastIndexOf("?t=")
                 ? picture.lastIndexOf("?t=")
-                : picture.length) + 3)
-            picture = thePicture + "?t=" + (parseInt(!!n
-                ? n
-                : "0") + 1);
+                : 1));
+            let newPicture = thePicture + "?t=" + (parseInt(n) + 1);
             if (!!this.state.pfopImages[index]) {
-                this.state.pfopImages[index].url = picture;
+                this.state.pfopImages[index].url = newPicture;
             }
             this.forceUpdate();
         }
@@ -143,7 +146,7 @@ export default ({mediaType, children}) => (
                 setTimeout(() => {
                     //无效时每100毫秒刷新一次
                     this.reloadPfopingPictrue(picture, index);
-                }, 300)
+                }, 200)
             }
         }
 
@@ -169,23 +172,28 @@ export default ({mediaType, children}) => (
             this.forceUpdate();
         }
 
-        successLoading(type) {
-            console.log('success', type)
-            if (type == "fromImg") {
-                if (this.successedCount + 1 < this.state.images.length) {
-                    this.successedCount += 1;
-                    return false;
+        successLoading(index) {
+            let pfopArr = cloneDeep(this.state.pfopImages);
+            pfopArr[index] = 1;
+            this.setState({
+                pfopImages: pfopArr
+            }, () => {
+                if(this.state.images.length && !this.state.pfopImages.some(item => item === 0)) { //全部加载成功
+                    this.getPictures(this.state.images)
+                    this.setState({
+                        down: true
+                    })
                 }
-                this.successedCount = 0;
-                setTimeout(this.state.loadingRemoteImageFun, 500);
-            }
-            let pfopImages = this.state.images.map((item) => {
-                item.url = item.url.substr(0, ~item.url.lastIndexOf("?t=")
-                    ? item.url.lastIndexOf("?t=")
-                    : item.url.length) + "?t=foreditor"
-                return item;
-            });
-            this.setState({provisible: false, pfopImages: pfopImages, previsible: true, images: []});
+            })
+
+            setTimeout(this.state.loadingRemoteImageFun, 500);
+
+        }
+
+        reback() {
+            this.setState({
+                down: false
+            })
         }
 
 
@@ -210,6 +218,8 @@ export default ({mediaType, children}) => (
                                 atuoSize={[650, 0]}
                                 receiveSelectedPictures={this.groupAppend}
                                 uploadConfig={uploadConfig}
+                                down={this.state.down}
+                                reback={this.reback}
                             >
                                 <Button
                                     type={className}
@@ -229,30 +239,12 @@ export default ({mediaType, children}) => (
                             }}
                         >
                             {this.state.images.map((item, index) => <img
-                                style={{width: "100px"}} src={item.url + "?t=10"}
+                                key={index}
+                                style={{width: "100px"}} src={item.url}
                                 onError={(event) => this.failureLoading(event, index)}
-                                onLoad={() => this.successLoading("fromImg")}/>)}
+                                onLoad={() => this.successLoading(index)}/>)}
 
                         </div>
-
-                        <Modal
-                            title="图片预览"
-                            visible={that.state.previsible}
-                            width={800}
-                            closable={false}
-                            footer={[< Button key="back" size="large" onClick={
-                                that.handleCancelUploading
-                            }> 取消 </Button>,
-                                <Button key="submit" type="primary" size="large" disabled={that.state.pfopImages.length == 0} onClick={() => that.realLoading("fromOld")}> 确认无误 </Button>]}>
-                            <div className="uploadingImagies">{that.state.pfopImages.map((item, index) => {
-                                // console.log("item,index", item, index);
-                                let url = item.url;
-                                return <div>
-                                    <a onClick={() => that.reloadUploadingPictrue(url, index)} title="手动刷新"><Icon
-                                        type="reload"/></a><img style={{width: "100%"}} src={url}/></div>
-                            })
-                            }</div>
-                        </Modal>
                     </div>
                 )
             }
