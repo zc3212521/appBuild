@@ -26,6 +26,8 @@ import ColorsButton from './ColorsToggle';
 
 import editorStyles from './editorStyles.css';
 
+import './editor.less';
+
 import {stateToHTML} from 'draft-js-export-html';
 
 import {stateFromHTML} from 'draft-js-import-html';
