@@ -26,6 +26,10 @@ import ColorsButton from './ColorsToggle';
 
 import editorStyles from './editorStyles.css';
 
+import {stateToHTML} from 'draft-js-export-html';
+
+import {stateFromHTML} from 'draft-js-import-html';
+
 const focusPlugin = createFocusPlugin();
 
 const blockDndPlugin = createBlockDndPlugin();
@@ -75,58 +79,108 @@ const plugins = [
 ];
 
 /* eslint-disable */
-const initialState = {
-    "entityMap": {
-        "0": {
-            "type": "image",
-            "mutability": "IMMUTABLE",
-            "data": {
-                "src": "https://wscdn.ql1d.com/12832690150305721735QN1D535SouthEast.png"
-            }
-        }
-    },
-    "blocks": [{
-        "key": "9gm3s",
-        "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }, {
-        "key": "ov7r",
-        "text": " ",
-        "type": "atomic",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        // "entityRanges": [{
-        //     "offset": 0,
-        //     "length": 1,
-        //     "key": 0
-        // }],
-        "data": {}
-    }, {
-        "key": "e23a8",
-        "text": "See advanced examples further down …",
-        "type": "unstyled",
-        "depth": 0,
-        "inlineStyleRanges": [],
-        "entityRanges": [],
-        "data": {}
-    }]
-};
+// const initialState = {
+//     "entityMap": {
+//         "0": {
+//             "type": "image",
+//             "mutability": "IMMUTABLE",
+//             "data": {
+//                 "src": "https://wscdn.ql1d.com/12832690150305721735QN1D535SouthEast.png"
+//             }
+//         }
+//     },
+//     "blocks": [{
+//         "key": "9gm3s",
+//         "text": "You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.",
+//         "type": "unstyled",
+//         "depth": 0,
+//         "inlineStyleRanges": [],
+//         "entityRanges": [],
+//         "data": {}
+//     }, {
+//         "key": "ov7r",
+//         "text": " ",
+//         "type": "atomic",
+//         "depth": 0,
+//         "inlineStyleRanges": [],
+//         // "entityRanges": [{
+//         //     "offset": 0,
+//         //     "length": 1,
+//         //     "key": 0
+//         // }],
+//         "data": {}
+//     }, {
+//         "key": "e23a8",
+//         "text": "See advanced examples further down …",
+//         "type": "unstyled",
+//         "depth": 0,
+//         "inlineStyleRanges": [],
+//         "entityRanges": [],
+//         "data": {}
+//     }]
+// };
 /* eslint-enable */
 
-export default class CustomImageEditor extends Component {
+let HTML = '<h1>jfkslajfkls</h1> <h1><br></h1> <figure><img src="https://wscdn.ql1d.com/69961895745047750241.jpg"/></figure> <p>fsjjfsljflsjfsl</p>';
 
+// let contentState = stateFromHTML(HTML);
+
+export default class CustomImageEditor extends Component {
     state = {
-        editorState: EditorState.createWithContent(convertFromRaw(initialState)),
+        editorState: EditorState.createWithContent(stateFromHTML(HTML)),
+        toHTML: '',
     };
 
     onChange = (editorState) => {
+        let obj = {};
+        Object.keys(colors).map((item, i) => {
+            obj[item] = {style: colors[item]};
+        });
+
+        let options = {
+            inlineStyles: obj,
+            entityStyleFn: (entity) => {
+                const entityType = entity.get('type').toLowerCase();
+                if (entityType === 'audio') {
+                    const data = entity.getData();
+                    return {
+                        element: 'audio',
+                        attributes: {
+                            src: data.src,
+                            controls: ' controls'
+                        },
+                        style: {
+                            // Put styles here...
+                        },
+                    };
+                }
+                if (entityType === 'video') {
+                    const data = entity.getData();
+                    return {
+                        element: 'video',
+                        attributes: {
+                            src: data.src,
+                            controls: ' controls'
+                        },
+                        style: {
+                            // Put styles here...
+                        },
+                    };
+                }
+            },
+        };
+
+        let contentState = editorState.getCurrentContent();
+
+        let html = stateToHTML(contentState, options);
+
         this.setState({
             editorState,
+            toHTML: html,
         });
+
+
+
     };
 
     focus = () => {
@@ -143,10 +197,12 @@ export default class CustomImageEditor extends Component {
                         onChange={this.onChange}
                         plugins={plugins}
                         ref={(element) => { this.editor = element; }}
+                        placeholder="美好的一天从书写开始..."
                     />
                     <SideToolbar modifier={imagePlugin.addImage}/>
                     <InlineToolbar />
                 </div>
+                <div>{this.state.toHTML}</div>
             </div>
         );
     }

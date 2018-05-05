@@ -7,7 +7,7 @@ import {PRO_QINIU} from '../../../../../common/upload/util'
 import WatermarkImgUpload from '../../../../../common/watermarkImgUplod';
 import cloneDeep from 'lodash/cloneDeep';
 
-export default ({mediaType, children}) => (
+export default ({mediaType, children, title=''}) => (
     class BlockStyleButton extends Component {
         constructor(props) {
             super(props)
@@ -225,6 +225,7 @@ export default ({mediaType, children}) => (
                                     type={className}
                                     children={children}
                                     style={{width: '36px', height: '36px', padding: 0}}
+                                    title={title}
                                 />
                             </WatermarkImgUpload>
                         </div>
@@ -267,6 +268,7 @@ export default ({mediaType, children}) => (
                                 onClick={this.addMedia}
                                 children={children}
                                 style={{width: '36px', height: '36px', padding: 0}}
+                                title={title}
                             />
                         </UploadFile>
 

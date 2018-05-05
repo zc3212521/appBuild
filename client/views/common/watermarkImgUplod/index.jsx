@@ -148,13 +148,6 @@ class GroupUpload extends Component {
             this.getPfopPictures(newPicturesObj);
         }
 
-        // const args = {
-        //   message: '图片正在进行持久保存：',
-        //   description: <div>{(()=>{return this.renderPfopPictrues(newPicturesObj);})()}</div>,
-        //   duration: 0,
-        // };
-        // notification.open(args);
-        // console.log("getPfop refObj",refObj)
         let pictureList = refObj.map(item => {
             let domain = "", picture = "";
             if (!!item.originPic) {
