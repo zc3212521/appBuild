@@ -123,7 +123,7 @@ const plugins = [
 // };
 /* eslint-enable */
 
-let HTML = '<h1>jfkslajfkls</h1> <h1><br></h1> <figure><img src="https://wscdn.ql1d.com/69961895745047750241.jpg"/></figure> <p>fsjjfsljflsjfsl</p>';
+let HTML = '';
 
 // let contentState = stateFromHTML(HTML);
 

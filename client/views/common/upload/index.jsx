@@ -61,7 +61,7 @@ class UploadFile extends Component {
 
             return isFormat;
         })
-        // this.props.onStart(file)
+        message.info('上传中。。。')
     }
 
     onChange(info) {
@@ -110,6 +110,7 @@ class UploadFile extends Component {
             _this.forceUpdate();
             console.log("准备上传给父组件", _this.state.files)
             _this.props.cbReceiver(_this.state.files);
+            message.destroy();
         }
     }
 

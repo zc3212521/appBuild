@@ -32,7 +32,7 @@ export default class Image extends Component {
                 {...elementProps}
                 src={src}
                 role="presentation"
-                style={{maxWidth:"100%"}}
+                style={{maxWidth:"100%", cursor:'move'}}
                 className={combinedClassName}
             />
         </div>
