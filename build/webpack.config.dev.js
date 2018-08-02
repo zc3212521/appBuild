@@ -13,7 +13,7 @@ const config = webpackMerge(baseConfig, {
     },
     devServer: {
         host: '0.0.0.0',
-        port: '8888',
+        port: '8085',
         contentBase: path.join(__dirname, '../dist'),
         hot: true, //热更替相关配置
         overlay: {

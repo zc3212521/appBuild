@@ -81,7 +81,14 @@ const initialState = {
             "type": "image",
             "mutability": "IMMUTABLE",
             "data": {
-                "src": "https://wscdn.ql1d.com/12832690150305721735QN1D535SouthEast.png"
+                "src": "https://wscdn.ql1d.com/31999134935610288861.jpg"
+            }
+        },
+        "1": {
+            "type": "image",
+            "mutability": "IMMUTABLE",
+            "data": {
+                "src": "https://wscdn.ql1d.com/63176873725799917118.jpg"
             }
         }
     },
@@ -99,11 +106,11 @@ const initialState = {
         "type": "atomic",
         "depth": 0,
         "inlineStyleRanges": [],
-        // "entityRanges": [{
-        //     "offset": 0,
-        //     "length": 1,
-        //     "key": 0
-        // }],
+        "entityRanges": [{
+            "offset": 0,
+            "length": 1,
+            "key": 0
+        }],
         "data": {}
     }, {
         "key": "e23a8",
@@ -113,7 +120,19 @@ const initialState = {
         "inlineStyleRanges": [],
         "entityRanges": [],
         "data": {}
-    }]
+    }, {
+        "key": "ovkl",
+        "text": " ",
+        "type": "atomic",
+        "depth": 0,
+        "inlineStyleRanges": [],
+        "entityRanges": [{
+            "offset": 0,
+            "length": 1,
+            "key": 1
+        }],
+        "data": {}
+    }, ]
 };
 /* eslint-enable */
 
