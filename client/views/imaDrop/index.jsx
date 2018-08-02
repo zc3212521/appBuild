@@ -26,6 +26,12 @@ import ColorsButton from './ColorsToggle';
 
 import editorStyles from './editorStyles.css';
 
+import './editor.less';
+
+import {stateToHTML} from 'draft-js-export-html';
+
+import {stateFromHTML} from 'draft-js-import-html';
+
 const focusPlugin = createFocusPlugin();
 
 const blockDndPlugin = createBlockDndPlugin();
@@ -136,16 +142,66 @@ const initialState = {
 };
 /* eslint-enable */
 
-export default class CustomImageEditor extends Component {
+let HTML = '';
 
+// let contentState = stateFromHTML(HTML);
+
+export default class CustomImageEditor extends Component {
     state = {
-        editorState: EditorState.createWithContent(convertFromRaw(initialState)),
+        editorState: EditorState.createWithContent(stateFromHTML(HTML)),
+        toHTML: '',
     };
 
     onChange = (editorState) => {
+        let obj = {};
+        Object.keys(colors).map((item, i) => {
+            obj[item] = {style: colors[item]};
+        });
+
+        let options = {
+            inlineStyles: obj,
+            entityStyleFn: (entity) => {
+                const entityType = entity.get('type').toLowerCase();
+                if (entityType === 'audio') {
+                    const data = entity.getData();
+                    return {
+                        element: 'audio',
+                        attributes: {
+                            src: data.src,
+                            controls: ' controls'
+                        },
+                        style: {
+                            // Put styles here...
+                        },
+                    };
+                }
+                if (entityType === 'video') {
+                    const data = entity.getData();
+                    return {
+                        element: 'video',
+                        attributes: {
+                            src: data.src,
+                            controls: ' controls'
+                        },
+                        style: {
+                            // Put styles here...
+                        },
+                    };
+                }
+            },
+        };
+
+        let contentState = editorState.getCurrentContent();
+
+        let html = stateToHTML(contentState, options);
+
         this.setState({
             editorState,
+            toHTML: html,
         });
+
+
+
     };
 
     focus = () => {
@@ -162,10 +218,12 @@ export default class CustomImageEditor extends Component {
                         onChange={this.onChange}
                         plugins={plugins}
                         ref={(element) => { this.editor = element; }}
+                        placeholder="美好的一天从书写开始..."
                     />
                     <SideToolbar modifier={imagePlugin.addImage}/>
                     <InlineToolbar />
                 </div>
+                <div>{this.state.toHTML}</div>
             </div>
         );
     }

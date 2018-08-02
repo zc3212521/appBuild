@@ -33,10 +33,13 @@ export default class Toolbar extends React.Component {
     const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
     // TODO verify that always a key-0-0 exists
     const offsetKey = DraftOffsetKey.encode(currentBlock.getKey(), 0, 0);
+    console.log('offsetKey', offsetKey);
     // Note: need to wait on tick to make sure the DOM node has been create by Draft.js
     setTimeout(() => {
       const node = document.querySelectorAll(`[data-offset-key="${offsetKey}"]`)[0];
         let top;
+        console.log('node', node)
+        if(node === undefined || node.tagName === 'figure') return false;
         switch(node.tagName){
             case 'H1' :
               top = node.getBoundingClientRect().top + 6;

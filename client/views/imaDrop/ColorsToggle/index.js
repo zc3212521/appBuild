@@ -52,7 +52,7 @@ export default class ColorsButton extends React.Component {
                     <Button
                         type={className}
                         onClick={() => {this.toggleStyle(color.label)}}
-                        style={{width:'36px', height:'36px'}}
+                        style={{width:'36px', height:'36px', padding:'0'}}
                     >
                         <i style={{backgroundColor: color.style, display:'inline-block', height:'16px',marginTop:'4px',width:'16px',borderRadius:'3px'}} />
                     </Button>

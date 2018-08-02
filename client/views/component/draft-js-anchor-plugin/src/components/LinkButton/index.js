@@ -43,7 +43,7 @@ export default class LinkButton extends Component {
         <Button
           type={className}
           onClick={hasLinkSelected ? onRemoveLinkAtSelection : this.onAddLinkClick}
-          style={{width:'36px', height:'36px', fontSize:'0'}}
+          style={{width:'36px', height:'36px', fontSize:'0', padding:'0'}}
         >
             <i className='iconfont icon-link' />
         </Button>

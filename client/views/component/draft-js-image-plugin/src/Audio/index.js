@@ -28,11 +28,12 @@ export default class Image extends Component {
     const { src } = contentState.getEntity(block.getEntityAt(0)).getData();
     return (
         <div style={{textAlign:"center"}}>
-            <img
+            <audio
+                controls="controls"
                 {...elementProps}
                 src={src}
                 role="presentation"
-                style={{maxWidth:"100%", cursor:'move'}}
+                style={{maxWidth:"100%"}}
                 className={combinedClassName}
             />
         </div>

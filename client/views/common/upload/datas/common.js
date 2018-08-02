@@ -3,9 +3,7 @@ import {
   message
 } from 'antd';
 
-import {
-  forIn
-} from "lodash";
+import forIn from "lodash/forIn";
 const commonFun = {
   test: function(a) {
     alert(a);

@@ -4,7 +4,7 @@ import { RichUtils } from 'draft-js';
 import unionClassNames from 'union-class-names';
 import { Button } from 'antd'
 
-export default ({ blockType, children }) => (
+export default ({ blockType, children, title='' }) => (
   class BlockStyleButton extends Component {
 
     toggleStyle = (event) => {
@@ -46,7 +46,8 @@ export default ({ blockType, children }) => (
             type={className}
             onClick={this.toggleStyle}
             children={children}
-            style={{width:'36px', height:'36px'}}
+            style={{width:'36px', height:'36px', padding:'0'}}
+            title={title}
           />
         </div>
       );
