@@ -21,6 +21,7 @@
   "homepage": "https://github.com/zc3212521/appBuild#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "classnames": "^2.2.6",
     "mobx": "^4.0.1",
     "mobx-react": "^5.0.0",
     "prop-types": "^15.6.1",
