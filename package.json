@@ -22,6 +22,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "draft-js": "^0.10.5",
+    "immutable": "^3.8.2",
     "mobx": "^4.0.1",
     "mobx-react": "^5.0.0",
     "prop-types": "^15.6.1",
