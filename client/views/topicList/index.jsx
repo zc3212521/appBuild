@@ -1,122 +1,118 @@
-import React  from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
+/**
+ * Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+ *
+ * This file provided by Facebook is for non-commercial testing and evaluation
+ * purposes only. Facebook reserves all rights not expressly granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+'use strict';
+
+import Draft from 'draft-js';
+import {Map} from 'immutable';
+import React from 'react';
+
+import TeXBlock from './TeXBlock';
+import {content} from './data/content';
+import {insertTeXBlock} from './modifiers/insertTeXBlock';
+import {removeTeXBlock} from './modifiers/removeTeXBlock';
 
 import './css/style.css'
+import './css/TeXEditor.css'
 
-export default class TopicList extends React.Component {
+var {Editor, EditorState, RichUtils} = Draft;
+
+export default class TeXEditorExample extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            showLDrag: false,
-            showRDrag: false,
-            startDrag: false,
-            startX: "",
-            imgWidth: 600,
-            imgCurrentWidth: 600,
-            showOption: false,
-        }
-    }
+            editorState: EditorState.createWithContent(content),
+            liveTeXEdits: Map(),
+        };
 
-    componentDidMount() {
-        document.addEventListener("mouseup", (e) => {
-            e.preventDefault()
+        this._blockRenderer = (block) => {
+            if (block.getType() === 'atomic') {
+                return {
+                    component: TeXBlock,
+                    editable: false,
+                    props: {
+                        onStartEdit: (blockKey) => {
+                            var {liveTeXEdits} = this.state;
+                            this.setState({liveTeXEdits: liveTeXEdits.set(blockKey, true)});
+                        },
+                        onFinishEdit: (blockKey, newContentState) => {
+                            var {liveTeXEdits} = this.state;
+                            this.setState({
+                                liveTeXEdits: liveTeXEdits.remove(blockKey),
+                                editorState:EditorState.createWithContent(newContentState),
+                            });
+                        },
+                        onRemove: (blockKey) => this._removeTeX(blockKey),
+                    },
+                };
+            }
+            return null;
+        };
+
+        this._focus = () => this.refs.editor.focus();
+        this._onChange = (editorState) => this.setState({editorState});
+
+        this._handleKeyCommand = (command, editorState) => {
+            var newState = RichUtils.handleKeyCommand(editorState, command);
+            if (newState) {
+                this._onChange(newState);
+                return true;
+            }
+            return false;
+        };
+
+        this._removeTeX = (blockKey) => {
+            var {editorState, liveTeXEdits} = this.state;
             this.setState({
-                startDrag: false,
-                imgCurrentWidth: this.state.imgWidth
-            })
-        })
+                liveTeXEdits: liveTeXEdits.remove(blockKey),
+                editorState: removeTeXBlock(editorState, blockKey),
+            });
+        };
+
+        this._insertTeX = () => {
+            this.setState({
+                liveTeXEdits: Map(),
+                editorState: insertTeXBlock(this.state.editorState),
+            });
+        };
     }
 
-    showRDrag = (e) => {
-        e.preventDefault()
-        this.setState({
-            showRDrag: true
-        })
-    }
-
-    startDrag = (e) => {
-        e.preventDefault()
-        this.setState({
-            startDrag: true,
-            startX: e.clientX,
-        })
-    }
-
-    endDrag = () => {
-        this.setState({
-            startDrag: false,
-            imgCurrentWidth: this.state.imgWidth
-        })
-    }
-
-    move = (e) => {
-        e.preventDefault()
-        if(!this.state.startDrag) return
-        const moveDis = this.state.startX - e.clientX
-        this.setState({
-            imgWidth: this.state.imgCurrentWidth - 2 * moveDis
-        })
-    }
-
-    hideRDrag = (e) => {
-        e.preventDefault()
-        this.setState({
-            startDrag: false,
-            showRDrag: false,
-        })
-    }
-
-    showOption = (e) => {
-        e.preventDefault()
-        this.setState({
-            showOption: true,
-        })
-    }
-
-    hideOption = (e) => {
-        e.preventDefault()
-        this.setState({
-            showOption: false,
-        })
-    }
-
-    remove = () => {
-        console.log("remove this image")
-    }
-
+    /**
+     * While editing TeX, set the Draft editor to read-only. This allows us to
+     * have a textarea within the DOM.
+     */
     render() {
-        const rDragStyle = this.state.showRDrag ? null : {hide: true}
-
         return (
-            <div
-                className="wrap"
-                style={{width: this.state.imgWidth}}
-                onMouseEnter={this.showOption}
-                onMouseLeave={this.hideOption}
-            >
-                <div className="img-wrap">
-                    <img src="https://wscdn.ql1d.com/63176873725799917118.jpg" alt=""/>
+            <div className="TexEditor-container">
+                <div className="TeXEditor-root">
+                    <div className="TeXEditor-editor" onClick={this._focus}>
+                        <Editor
+                            blockRendererFn={this._blockRenderer}
+                            editorState={this.state.editorState}
+                            handleKeyCommand={this._handleKeyCommand}
+                            onChange={this._onChange}
+                            placeholder="Start a document..."
+                            readOnly={this.state.liveTeXEdits.count()}
+                            ref="editor"
+                            spellCheck={true}
+                        />
+                    </div>
                 </div>
-                <div
-                    className={classNames("right", "drag")}
-                    onMouseOver={this.showRDrag}
-                    onMouseLeave={this.hideRDrag}
-                    onMouseDown={this.startDrag}
-                    onMouseUp={this.endDrag}
-                    onMouseMove={this.move}
-                >
-                    <div
-                        ref={this.dragRButtonRef}
-                        className={classNames("drag-children", "drag-children-right", rDragStyle)}
-                    />
-                </div>
-                <div className={classNames("img-remove", "img-option", {"show-option": this.state.showOption})}>
-                    <span className="remove-option" onClick={this.remove}>remove</span>
-                </div>
+                <button onClick={this._insertTeX} className="TeXEditor-insert">
+                    {'Insert new TeX'}
+                </button>
             </div>
-        )
+        );
     }
 }
-
-TopicList.propTypes = {}
