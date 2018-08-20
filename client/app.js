@@ -13,7 +13,7 @@ const root = document.getElementById('root')
 const render = (Component, renderMethod = "render") => {
     ReactDOM[renderMethod](
         <AppContainer>
-            <Provider appState={appState}>
+            <Provider store={store}>
                 <BrowserRouter>
                     <Component/>
                 </BrowserRouter>
